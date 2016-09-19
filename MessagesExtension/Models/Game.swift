@@ -24,6 +24,7 @@ extension Game {
         let maxRange: Int = numPicks - 1
         let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
         
+        picks = [Pick]()
         for index in 0...numPicks {
             let pick:Pick = Pick(isUnlucky: index == chosenPickIndex)
             picks.append(pick)
@@ -48,7 +49,7 @@ extension Game {
         return items
     }
     
-    init?(queryItems: [URLQueryItem]) {
+//    init?(queryItems: [URLQueryItem]) {
 //        var base: Base?
 //        var scoops: Scoops?
 //        var topping: Topping?
@@ -80,15 +81,15 @@ extension Game {
 //        self.base = decodedBase
 //        self.scoops = scoops
 //        self.topping = topping
-    }
+//    }
 }
 
 extension Game {
     init?(message: MSMessage?) {
         guard let messageURL = message?.url else { return nil }
         guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else { return nil }
-        
-        self.init(queryItems: queryItems)
+        picks = [Pick]()
+//        self.init(queryItems: queryItems)
     }
 }
    

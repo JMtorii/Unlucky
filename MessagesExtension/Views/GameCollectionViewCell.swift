@@ -11,13 +11,13 @@ import UIKit
 class GameCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "GameCollectionViewCell"
     
-    weak var imageView: UIImageView!
+    weak var imageView: UIImageView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.imageView = UIImageView()
-        self.addSubview(imageView)
+        self.addSubview(imageView!)
     }
     
     required init?(coder aDecoder: NSCoder) {
