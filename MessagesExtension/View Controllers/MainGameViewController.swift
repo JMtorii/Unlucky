@@ -52,8 +52,8 @@ class MainGameViewController: UIViewController {
         
         // gameCollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 200, height: 200)
-        
+        layout.itemSize = CGSize(width: self.view.frame.width / 3, height: 200)
+        layout.minimumInteritemSpacing = 0.0
         
         let gameCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
@@ -86,7 +86,7 @@ extension MainGameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
         
-        cell.imageView = UIImageView(image: UIImage(named: "back-card"))
+        cell.imageView.image = UIImage(named: "back-card")
         
         return cell
     }
@@ -95,6 +95,7 @@ extension MainGameViewController: UICollectionViewDataSource {
 extension MainGameViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Nothing to do here yet
+        self.delegate?.mainGameViewController(controller: self, didSelectAt: indexPath.row)
     }
 
 }

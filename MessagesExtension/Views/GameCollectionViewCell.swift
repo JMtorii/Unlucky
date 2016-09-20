@@ -16,6 +16,8 @@ class GameCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = .green
+        
         self.imageView = UIImageView()
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(imageView)
