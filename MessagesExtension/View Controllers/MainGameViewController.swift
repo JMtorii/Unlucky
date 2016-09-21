@@ -52,7 +52,7 @@ class MainGameViewController: UIViewController {
         
         // gameCollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: self.view.frame.width / 3, height: 200)
+        layout.itemSize = CGSize(width: self.view.frame.width / 4, height: 50)
         layout.minimumInteritemSpacing = 0.0
         
         let gameCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -86,16 +86,15 @@ extension MainGameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
         
-        cell.imageView.image = UIImage(named: "back-card")
-        
         return cell
     }
 }
 
 extension MainGameViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Nothing to do here yet
-        self.delegate?.mainGameViewController(controller: self, didSelectAt: indexPath.row)
+        guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a BodyPartCell") }
+
+        cell.flipCard()
     }
 
 }
