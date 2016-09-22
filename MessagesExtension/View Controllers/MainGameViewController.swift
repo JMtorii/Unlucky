@@ -52,14 +52,17 @@ class MainGameViewController: UIViewController {
         
         // gameCollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: self.view.frame.width / 4, height: 50)
-        layout.minimumInteritemSpacing = 0.0
+        layout.minimumInteritemSpacing = 10.0
+        layout.minimumLineSpacing = 10.0
+        layout.sectionInset = UIEdgeInsets(top: 20.0, left: 40.0, bottom: 20.0, right: 40.0)
+        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         
         let gameCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
         gameCollectionView.delegate = self
         gameCollectionView.dataSource = self
+        gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
         gameCollectionView.backgroundColor = .white
+        gameCollectionView.isScrollEnabled = false
         gameCollectionView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))
         
         stackView.addArrangedSubview(gameCollectionView)
@@ -80,7 +83,7 @@ extension MainGameViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 15
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
