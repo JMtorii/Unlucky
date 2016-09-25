@@ -10,9 +10,9 @@ import Foundation
 import Messages
 
 struct Game {
-    var rawValue: String?
-    
     var picks: [Pick]
+    
+    var isOver: Bool?
 }
 
 extension Game {
@@ -24,11 +24,13 @@ extension Game {
         let maxRange: Int = numPicks - 1
         let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
         
-        picks = [Pick]()
+        self.picks = [Pick]()
         for index in 0...numPicks {
-            let pick:Pick = Pick(isUnlucky: index == chosenPickIndex)
-            picks.append(pick)
+            let pick:Pick = Pick(isUnlucky: index == chosenPickIndex, isPicked: false)
+            self.picks.append(pick)
         }
+        
+        self.isOver = false
     }
 }
 
@@ -36,60 +38,31 @@ extension Game {
     var queryItems: [URLQueryItem] {
         var items = [URLQueryItem]()
         
-//        if let part = base {
-//            items.append(part.queryItem)
-//        }
-//        if let part = scoops {
-//            items.append(part.queryItem)
-//        }
-//        if let part = topping {
-//            items.append(part.queryItem)
-//        }
-        
+        for pick in self.picks {
+            items.append(pick.queryItem)
+        }
+
         return items
     }
     
-//    init?(queryItems: [URLQueryItem]) {
-//        var base: Base?
-//        var scoops: Scoops?
-//        var topping: Topping?
-//        
-//        for queryItem in queryItems {
-//            guard let value = queryItem.value else { continue }
-//            
-//            if let decodedPart = Base(rawValue: value), queryItem.name == Base.queryItemKey {
-//                base = decodedPart
-//            }
-//            if let decodedPart = Scoops(rawValue: value), queryItem.name == Scoops.queryItemKey {
-//                scoops = decodedPart
-//            }
-//            if let decodedPart = Topping(rawValue: value), queryItem.name == Topping.queryItemKey {
-//                topping = decodedPart
-//            }
-//        }
-        
-//        var game: Game?
-//        
-//        for queryItem in queryItems {
-//            guard let value = queryItem.value else { continue }
-//            
-//        }
-//        
-//        
-//        guard let decodedBase = base else { return nil }
-//        
-//        self.base = decodedBase
-//        self.scoops = scoops
-//        self.topping = topping
-//    }
+    init?(queryItems: [URLQueryItem]) {        
+        self.picks = [Pick]()
+        for queryItem in queryItems {
+            guard let value = queryItem.value else { continue }
+            
+            if queryItem.name == "Pick" {
+                let decordedPick: Pick = Pick(rawValue: value)
+                self.picks.append(decordedPick)
+            }
+        }        
+    }
 }
 
 extension Game {
     init?(message: MSMessage?) {
         guard let messageURL = message?.url else { return nil }
         guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else { return nil }
-        picks = [Pick]()
-//        self.init(queryItems: queryItems)
+        self.init(queryItems: queryItems)
     }
 }
    

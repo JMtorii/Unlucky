@@ -8,10 +8,59 @@
 
 import UIKit
 
-struct Pick {
-    var isUnlucky: Bool?
+struct Pick {    
+    var isUnlucky: Bool!
     
-    init(isUnlucky: Bool) {
+    var isPicked: Bool!
+    
+    init(isUnlucky: Bool, isPicked: Bool) {
         self.isUnlucky = isUnlucky
+        self.isPicked = isPicked
+    }
+    
+    init(rawValue: String) {
+        // we assume rawValue keys are isUnlucky and isPicked and nothing else
+        let data: NSData = rawValue.data(using: String.Encoding.utf8)! as NSData
+                
+        do {
+            let anyObj: Any? = try JSONSerialization.jsonObject(with: data as Data, options: .mutableContainers)
+            self.parseJson(anyObj: anyObj)
+            
+        } catch {
+            print(error)
+        }        
+    }
+    
+    private mutating func parseJson(anyObj: Any) {
+        let obj = anyObj as? [String:AnyObject]
+        
+        guard let isUnluckyDecoded: String = (obj?["isUnlucky"] as? String) else {
+            fatalError("Bad message data")
+        }
+        
+        self.isUnlucky = Bool(isUnluckyDecoded)
+        
+        guard let isPickedDecoded: String = (obj?["isPicked"] as? String) else {
+            fatalError("Bad message data")
+        }
+        self.isPicked = Bool(isPickedDecoded)      
+    }
+    
+    fileprivate func rawValue() -> String {
+        return "{\"isUnlucky\": \"\(String(self.isUnlucky))\", \"isPicked\": \"\(String(self.isPicked))\" }"
+    }
+}
+
+/**
+ Extends instances of `QueryItemRepresentable` that also conformt to `IceCreamPart`
+ to provide a default implementation of `queryItem`.
+ */
+extension Pick: QueryItemRepresentable {
+    var queryItem: URLQueryItem {
+        return URLQueryItem(name: self.queryItemKey, value: rawValue())
+    }
+    
+    var queryItemKey: String {
+        return "Pick"
     }
 }

@@ -11,6 +11,7 @@
 		B60675511D8E2A8300039338 /* Pick.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60675501D8E2A8300039338 /* Pick.swift */; };
 		B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658BA121D8F3A0900C557DF /* GameOverViewController.swift */; };
 		B658BA161D8F74FA00C557DF /* GameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658BA151D8F74FA00C557DF /* GameCollectionViewCell.swift */; };
+		B671C7B41D96CED200ED1DF3 /* QueryItemRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671C7B31D96CED200ED1DF3 /* QueryItemRepresentable.swift */; };
 		B6B69B0C1D88C00D00325A59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B0B1D88C00D00325A59 /* Assets.xcassets */; };
 		B6B69B131D88C00D00325A59 /* MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B6B69B121D88C00D00325A59 /* MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B6B69B181D88C00D00325A59 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B69B171D88C00D00325A59 /* Messages.framework */; };
@@ -50,6 +51,7 @@
 		B60675501D8E2A8300039338 /* Pick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pick.swift; path = MessagesExtension/Models/Pick.swift; sourceTree = SOURCE_ROOT; };
 		B658BA121D8F3A0900C557DF /* GameOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		B658BA151D8F74FA00C557DF /* GameCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewCell.swift; sourceTree = "<group>"; };
+		B671C7B31D96CED200ED1DF3 /* QueryItemRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryItemRepresentable.swift; sourceTree = "<group>"; };
 		B6B69B081D88C00D00325A59 /* Unlucky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unlucky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6B69B0B1D88C00D00325A59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6B69B0D1D88C00D00325A59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			children = (
 				B606754B1D8E1F2400039338 /* Game.swift */,
 				B60675501D8E2A8300039338 /* Pick.swift */,
+				B671C7B31D96CED200ED1DF3 /* QueryItemRepresentable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B671C7B41D96CED200ED1DF3 /* QueryItemRepresentable.swift in Sources */,
 				B60675511D8E2A8300039338 /* Pick.swift in Sources */,
 				B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */,
 				B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */,

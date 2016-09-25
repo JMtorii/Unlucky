@@ -12,11 +12,22 @@ class MainGameViewController: UIViewController {
     
     weak var delegate: MainGameViewControllerDelegate?
     var game: Game?
+    var isCancelledGame: Bool?
     
     var scrollView: UIScrollView!
     var stackView: UIStackView!
     var titleLabel: UILabel!
     var gameCollectionView: UICollectionView!
+    
+    init(game: Game, isCancelledGame: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        self.game = game
+        self.isCancelledGame = isCancelledGame
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         self.view.backgroundColor = .blue
@@ -79,15 +90,7 @@ class MainGameViewController: UIViewController {
         stackView.addArrangedSubview(gameCollectionView)
         print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
 
-        stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))
-    }
-    
-    private func addSpacerView(toStackView stackView:UIStackView, withHeight height:CGFloat) {
-        let spacer: UIView = UIView()
-        spacer.translatesAutoresizingMaskIntoConstraints = false
-        spacer.addConstraint(NSLayoutConstraint(item: spacer, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: height))
-        
-        stackView.addArrangedSubview(spacer)
+        stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))        
     }
 }
 
@@ -97,11 +100,15 @@ extension MainGameViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return 6
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
+        
+        if (game?.picks[indexPath.row].isPicked)! {
+            cell.enableCard()
+        }
         
         return cell
     }
@@ -112,13 +119,19 @@ extension MainGameViewController: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a BodyPartCell") }
 
         cell.flipCard(completion: { 
-            self.delegate?.mainGameViewController(controller: self, didSelectAt: indexPath.row)
+            self.game?.picks[indexPath.row].isPicked = true
+            
+            if (self.game?.picks[indexPath.row].isUnlucky)! {
+                self.game?.isOver = true
+            }
+            
+            self.delegate?.mainGameViewController(controller: self)
         })
     }
 
 }
 
 protocol MainGameViewControllerDelegate: class {
-    func mainGameViewController(controller: MainGameViewController, didSelectAt index: Int)
+    func mainGameViewController(controller: MainGameViewController)
 }
 

@@ -11,6 +11,8 @@ import Messages
 
 class MessagesViewController: MSMessagesAppViewController {
     
+    var cancelledGame: Game?
+    
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
@@ -30,6 +32,12 @@ class MessagesViewController: MSMessagesAppViewController {
         presentViewController(for: conversation, with: presentationStyle)
     }
     
+    override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
+        cancelledGame = Game(message: message)
+        print("Cancelled")
+    }
+
+    
     
     // MARK: Helper methods
     
@@ -39,7 +47,11 @@ class MessagesViewController: MSMessagesAppViewController {
             controller = instantiateStartGameViewController()
             
         } else {
-            let game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)            
+            var game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)    
+            if (cancelledGame != nil) {
+                game = cancelledGame
+            }
+            
             controller = instantiateMainGameViewController(game: game!)
         }
                 
@@ -73,9 +85,8 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     private func instantiateMainGameViewController(game: Game) -> UIViewController {
-        let controller = MainGameViewController()
+        let controller = MainGameViewController(game: game, isCancelledGame: (self.cancelledGame != nil))
         controller.delegate = self
-        controller.game = game
         
         return controller
     }
@@ -93,7 +104,40 @@ extension MessagesViewController: StartGameViewControllerDelegate {
 }
 
 extension MessagesViewController: MainGameViewControllerDelegate {
-    func mainGameViewController(controller: MainGameViewController, didSelectAt index: Int) {
-        // TODO: take action here
+    func mainGameViewController(controller: MainGameViewController) {
+        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+        guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
+        
+        let messageCaption: String = NSLocalizedString("Let's play", comment: "")
+        
+        // Create a new message with the same session as any currently selected message.
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session)
+
+        // Add the message to the conversation.
+        conversation.insert(message) { error in
+            if let error = error {
+                print(error)
+            }
+        }
+        
+        // reset cancelled game object
+        self.cancelledGame = nil
+        
+        dismiss()
+    }
+    
+    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil) -> MSMessage {
+        var components = URLComponents()
+        components.queryItems = game.queryItems
+        
+        let layout = MSMessageTemplateLayout()
+        layout.image = UIImage(named: "logo")
+        layout.caption = caption
+        
+        let message = MSMessage(session: session ?? MSSession())
+        message.url = components.url!
+        message.layout = layout
+        
+        return message
     }
 }

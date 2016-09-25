@@ -6,4 +6,8 @@
 //  Copyright © 2016 JMtorii. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class GameOverViewController: UIViewController {
+    
+}

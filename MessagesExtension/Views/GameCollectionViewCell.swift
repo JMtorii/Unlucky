@@ -28,7 +28,7 @@ class GameCollectionViewCell: UICollectionViewCell {
         // self view
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.backgroundColor = .green
-        self.contentView.addConstraint(NSLayoutConstraint(item: self.contentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 80.0))
+        self.contentView.addConstraint(NSLayoutConstraint(item: self.contentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 90.0))
         self.contentView.addConstraint(NSLayoutConstraint(item: self.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 150.0))
         
         
@@ -81,11 +81,15 @@ class GameCollectionViewCell: UICollectionViewCell {
     func flipCard(completion: @escaping (Void) -> Void) {
         if (self.frontCardImageView.isHidden) {
             UIView.transition(with: self.cardContainer, duration: 1.0, options: .transitionFlipFromRight, animations: { 
-                self.backCardImageView.isHidden = true
-                self.frontCardImageView.isHidden = false
+                self.enableCard()
             }, completion: { finished in
                 completion()
             });
         }
+    }
+    
+    func enableCard() {
+        self.backCardImageView.isHidden = true
+        self.frontCardImageView.isHidden = false
     }
 }
