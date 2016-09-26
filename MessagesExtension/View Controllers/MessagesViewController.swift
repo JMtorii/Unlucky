@@ -42,6 +42,7 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: Helper methods
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
+        
         let controller: UIViewController
         if presentationStyle == .compact {
             controller = instantiateStartGameViewController()
@@ -52,9 +53,9 @@ class MessagesViewController: MSMessagesAppViewController {
                 game = cancelledGame
             }
             
-            controller = instantiateMainGameViewController(game: game!)
+            controller = (game?.isOver)! ? instantiateGameOverViewController(game: game!) : instantiateMainGameViewController(game: game!)
         }
-                
+        
         // Remove any existing child controllers.
         for child in childViewControllers {
             child.willMove(toParentViewController: nil)
@@ -90,8 +91,32 @@ class MessagesViewController: MSMessagesAppViewController {
         
         return controller
     }
-
+    
+    private func instantiateGameOverViewController(game: Game) -> UIViewController {
+        let controller = GameOverViewController(game: game)
+        controller.delegate = self
+        
+        return controller
+    }
+    
+    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil, layoutImage: UIImage) -> MSMessage {
+        var components = URLComponents()
+        components.queryItems = game.queryItems
+        
+        let layout = MSMessageTemplateLayout()
+        layout.image = layoutImage
+        layout.caption = caption
+        
+        let message = MSMessage(session: session ?? MSSession())
+        message.url = components.url!
+        message.layout = layout
+        
+        return message
+    }
 }
+
+
+// MARK: StartGameViewControllerDelegate
 
 extension MessagesViewController: StartGameViewControllerDelegate {
     func startGameViewControllerDidSelectStart(_ controller: StartGameViewController) {
@@ -103,15 +128,18 @@ extension MessagesViewController: StartGameViewControllerDelegate {
     }
 }
 
+
+// MARK: MainGameViewControllerDelegate
+
 extension MessagesViewController: MainGameViewControllerDelegate {
-    func mainGameViewController(controller: MainGameViewController) {
+    func mainGameViewControllerPickSelected(controller: MainGameViewController) {
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
         
         let messageCaption: String = NSLocalizedString("Let's play", comment: "")
         
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session)
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"logo")!)
 
         // Add the message to the conversation.
         conversation.insert(message) { error in
@@ -126,18 +154,56 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         dismiss()
     }
     
-    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil) -> MSMessage {
-        var components = URLComponents()
-        components.queryItems = game.queryItems
+    func mainGameViewControllerGameOver(controller: MainGameViewController) {
+        let gameController = GameOverViewController(game: controller.game!)
+        gameController.delegate = self
         
-        let layout = MSMessageTemplateLayout()
-        layout.image = UIImage(named: "logo")
-        layout.caption = caption
+        // Remove any existing child controllers.
+        for child in childViewControllers {
+            child.willMove(toParentViewController: nil)
+            child.view.removeFromSuperview()
+            child.removeFromParentViewController()
+        }
         
-        let message = MSMessage(session: session ?? MSSession())
-        message.url = components.url!
-        message.layout = layout
+        // Embed the new controller
+        addChildViewController(gameController)
         
-        return message
+        gameController.view.frame = view.bounds
+        gameController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gameController.view)
+        
+        gameController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        gameController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        gameController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        gameController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        gameController.didMove(toParentViewController: self)
+    }
+}
+
+
+// MARK: GameOverViewControllerDelegate
+
+extension MessagesViewController: GameOverViewControllerDelegate {
+    func gameOverViewControllerConfirmed(controller: GameOverViewController) {
+        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+        guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
+        
+        let messageCaption: String = NSLocalizedString("I lost! :(", comment: "")
+        
+        // Create a new message with the same session as any currently selected message.
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named: "logo")!)
+        
+        // Add the message to the conversation.
+        conversation.insert(message) { error in
+            if let error = error {
+                print(error)
+            }
+        }
+        
+        // reset cancelled game object
+        self.cancelledGame = nil
+        
+        dismiss()
     }
 }

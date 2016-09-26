@@ -123,15 +123,18 @@ extension MainGameViewController: UICollectionViewDelegate {
             
             if (self.game?.picks[indexPath.row].isUnlucky)! {
                 self.game?.isOver = true
+                self.delegate?.mainGameViewControllerGameOver(controller: self)
+                
+            } else {
+                self.delegate?.mainGameViewControllerPickSelected(controller: self)
             }
-            
-            self.delegate?.mainGameViewController(controller: self)
         })
     }
-
 }
 
 protocol MainGameViewControllerDelegate: class {
-    func mainGameViewController(controller: MainGameViewController)
+    func mainGameViewControllerPickSelected(controller: MainGameViewController)
+    
+    func mainGameViewControllerGameOver(controller: MainGameViewController)
 }
 

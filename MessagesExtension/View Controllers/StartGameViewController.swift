@@ -51,12 +51,8 @@ class StartGameViewController: UIViewController {
     
     func startButtonClicked(sender:UIButton!) {
         NSLog("Hi");
-        delegate?.startGameViewControllerDidSelectStart(self)
+        self.delegate?.startGameViewControllerDidSelectStart(self)
     }
-    
-//    private func imageWithColor:(UIColor *)color -> UIImage {
-//    
-//    }
 }
 
 /**
