@@ -18,6 +18,7 @@
 		B6B69B1B1D88C00D00325A59 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B69B1A1D88C00D00325A59 /* MessagesViewController.swift */; };
 		B6B69B1E1D88C00D00325A59 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B1C1D88C00D00325A59 /* MainInterface.storyboard */; };
 		B6B69B201D88C00D00325A59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B1F1D88C00D00325A59 /* Assets.xcassets */; };
+		B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */; };
 		B6CE79F11D8B84CC002D3E86 /* StartGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */; };
 		B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		B6B69B1D1D88C00D00325A59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B6B69B1F1D88C00D00325A59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6B69B211D88C00D00325A59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainGameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,6 +103,7 @@
 				B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */,
 				B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */,
 				B658BA121D8F3A0900C557DF /* GameOverViewController.swift */,
+				B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */,
 				B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */,
 				B658BA161D8F74FA00C557DF /* GameCollectionViewCell.swift in Sources */,
+				B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */,
 				B6B69B1B1D88C00D00325A59 /* MessagesViewController.swift in Sources */,
 				B6CE79F11D8B84CC002D3E86 /* StartGameViewController.swift in Sources */,
 				B606754C1D8E1F2400039338 /* Game.swift in Sources */,

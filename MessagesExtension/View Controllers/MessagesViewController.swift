@@ -53,7 +53,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 game = cancelledGame
             }
             
-            controller = (game?.isOver())! ? instantiateGameOverViewController(game: game!) : instantiateMainGameViewController(game: game!)
+            controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!)
         }
         
         // Remove any existing child controllers.
@@ -94,6 +94,13 @@ class MessagesViewController: MSMessagesAppViewController {
     
     private func instantiateGameOverViewController(game: Game) -> UIViewController {
         let controller = GameOverViewController(game: game)
+        controller.delegate = self
+        
+        return controller
+    }
+    
+    private func instantiateWinGameViewController() -> UIViewController {
+        let controller = WinGameViewController()
         controller.delegate = self
         
         return controller
@@ -205,5 +212,11 @@ extension MessagesViewController: GameOverViewControllerDelegate {
         self.cancelledGame = nil
         
         dismiss()
+    }
+}
+
+extension MessagesViewController: WinGameViewControllerDelegate {
+    func winGameViewControllerClosed(controller: WinGameViewController) {
+        // Do something here
     }
 }
