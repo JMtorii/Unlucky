@@ -10,9 +10,7 @@ import Foundation
 import Messages
 
 struct Game {
-    var picks: [Pick]
-    
-    var isOver: Bool?
+    var picks: [Pick]    
 }
 
 extension Game {
@@ -22,15 +20,24 @@ extension Game {
         }
         
         let maxRange: Int = numPicks - 1
-        let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
+//        let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
+        let chosenPickIndex: Int = 0;
         
         self.picks = [Pick]()
         for index in 0...numPicks {
             let pick:Pick = Pick(isUnlucky: index == chosenPickIndex, isPicked: false)
             self.picks.append(pick)
+        }        
+    }
+    
+    func isOver() -> Bool {
+        for pick in picks {
+            if pick.isPicked && pick.isUnlucky {
+                return true
+            }
         }
         
-        self.isOver = false
+        return false
     }
 }
 
@@ -53,6 +60,7 @@ extension Game {
             if queryItem.name == "Pick" {
                 let decordedPick: Pick = Pick(rawValue: value)
                 self.picks.append(decordedPick)
+                
             }
         }        
     }

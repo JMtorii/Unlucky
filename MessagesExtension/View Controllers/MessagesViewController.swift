@@ -53,7 +53,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 game = cancelledGame
             }
             
-            controller = (game?.isOver)! ? instantiateGameOverViewController(game: game!) : instantiateMainGameViewController(game: game!)
+            controller = (game?.isOver())! ? instantiateGameOverViewController(game: game!) : instantiateMainGameViewController(game: game!)
         }
         
         // Remove any existing child controllers.

@@ -122,7 +122,6 @@ extension MainGameViewController: UICollectionViewDelegate {
             self.game?.picks[indexPath.row].isPicked = true
             
             if (self.game?.picks[indexPath.row].isUnlucky)! {
-                self.game?.isOver = true
                 self.delegate?.mainGameViewControllerGameOver(controller: self)
                 
             } else {
