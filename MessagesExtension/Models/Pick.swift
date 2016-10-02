@@ -61,6 +61,6 @@ extension Pick: QueryItemRepresentable {
     }
     
     var queryItemKey: String {
-        return "Pick"
+        return GamePickQueryItemKey
     }
 }

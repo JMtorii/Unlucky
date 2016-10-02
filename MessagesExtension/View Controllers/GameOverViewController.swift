@@ -69,7 +69,6 @@ class GameOverViewController: UIViewController {
     }
     
     func gameOverButtonClicked(sender:UIButton!) {
-        NSLog("Hi");
         self.delegate?.gameOverViewControllerConfirmed(controller: self)
     }
 }

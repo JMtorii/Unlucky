@@ -9,11 +9,16 @@
 import Foundation
 import Messages
 
+let GamePickQueryItemKey:String = "Pick"
+let GameSenderQueryItemKey:String = "Sender"
+
 struct Game {
-    var picks: [Pick]    
+    var picks: [Pick]
+    var sender: String?
 }
 
 extension Game {
+    // Initializer for a new game
     init?(numPicks: Int) {
         if numPicks == 0 {
             return nil
@@ -42,27 +47,36 @@ extension Game {
 }
 
 extension Game {
-    var queryItems: [URLQueryItem] {
-        var items = [URLQueryItem]()
-        
-        for pick in self.picks {
-            items.append(pick.queryItem)
-        }
-
-        return items
-    }
-    
+    // this is an initializer used when parsing received message
     init?(queryItems: [URLQueryItem]) {        
         self.picks = [Pick]()
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
             
-            if queryItem.name == "Pick" {
+            if queryItem.name == GamePickQueryItemKey {
                 let decordedPick: Pick = Pick(rawValue: value)
                 self.picks.append(decordedPick)
                 
+            } else if queryItem.name == GameSenderQueryItemKey {
+                self.sender = value
             }
         }        
+    }
+    
+    // this is sent in the message from delegate in MainGameViewController
+    var queryItems: [URLQueryItem] {
+        var items = [URLQueryItem]()
+        
+        // attach all picks
+        for pick in self.picks {
+            items.append(pick.queryItem)
+        }
+        
+        // attach the sender
+        let uuid:String = UIDevice.current.identifierForVendor!.uuidString
+        items.append(URLQueryItem(name: GameSenderQueryItemKey, value: uuid))
+
+        return items
     }
 }
 

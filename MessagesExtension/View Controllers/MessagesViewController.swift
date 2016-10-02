@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import Foundation
 import Messages
+
+let UserDefaultsIsSent = "USER_DEFAULTS_IS_SENT"
 
 class MessagesViewController: MSMessagesAppViewController {
     
@@ -21,6 +24,7 @@ class MessagesViewController: MSMessagesAppViewController {
         
         // Use this method to configure the extension and restore previously stored state.
         super.willBecomeActive(with: conversation);
+        
         presentViewController(for: conversation, with: presentationStyle)
     }
     
@@ -32,30 +36,35 @@ class MessagesViewController: MSMessagesAppViewController {
         presentViewController(for: conversation, with: presentationStyle)
     }
     
+    override func didReceive(_ message: MSMessage, conversation: MSConversation) {
+        UserDefaults.standard.set(false, forKey: UserDefaultsIsSent)
+    }
+    
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
         cancelledGame = Game(message: message)
         print("Cancelled")
     }
 
     
-    
     // MARK: Helper methods
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
-        let controller: UIViewController
+        let controller: UIViewController!
+        var game: Game?
+        
         if presentationStyle == .compact {
             controller = instantiateStartGameViewController()
             
         } else {
-            var game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)    
-            if (cancelledGame != nil) {
-                game = cancelledGame
+            game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!    
+            if cancelledGame != nil {
+                game = cancelledGame!
             }
             
             controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!)
         }
-        
+            
         // Remove any existing child controllers.
         for child in childViewControllers {
             child.willMove(toParentViewController: nil)
@@ -157,6 +166,8 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         
         // reset cancelled game object
         self.cancelledGame = nil
+//        self.isSent = true
+        UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
         
         dismiss()
     }
@@ -210,7 +221,8 @@ extension MessagesViewController: GameOverViewControllerDelegate {
         
         // reset cancelled game object
         self.cancelledGame = nil
-        
+        UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
+
         dismiss()
     }
 }

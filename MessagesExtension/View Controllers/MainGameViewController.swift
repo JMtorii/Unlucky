@@ -90,7 +90,11 @@ class MainGameViewController: UIViewController {
         stackView.addArrangedSubview(gameCollectionView)
         print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
 
-        stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))        
+        stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))
+        
+        if (game?.sender == UIDevice.current.identifierForVendor!.uuidString) {
+            titleLabel.text = NSLocalizedString("It's your buddy's turn!", comment: "Temporary title for the main game")
+        }
     }
 }
 
