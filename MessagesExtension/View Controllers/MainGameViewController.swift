@@ -12,17 +12,15 @@ class MainGameViewController: UIViewController {
     
     weak var delegate: MainGameViewControllerDelegate?
     var game: Game?
-    var isCancelledGame: Bool?
     
     var scrollView: UIScrollView!
     var stackView: UIStackView!
     var titleLabel: UILabel!
     var gameCollectionView: UICollectionView!
     
-    init(game: Game, isCancelledGame: Bool) {
+    init(game: Game) {
         super.init(nibName: nil, bundle: nil)
         self.game = game
-        self.isCancelledGame = isCancelledGame
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,7 +90,7 @@ class MainGameViewController: UIViewController {
 
         stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))
         
-        if (game?.sender == UIDevice.current.identifierForVendor!.uuidString) {
+        if self.game?.sender == UIDevice.current.identifierForVendor!.uuidString {
             titleLabel.text = NSLocalizedString("It's your buddy's turn!", comment: "Temporary title for the main game")
         }
     }
@@ -110,7 +108,7 @@ extension MainGameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
         
-        if (game?.picks[indexPath.row].isPicked)! {
+        if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
         }
         
@@ -120,18 +118,20 @@ extension MainGameViewController: UICollectionViewDataSource {
 
 extension MainGameViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a BodyPartCell") }
-
-        cell.flipCard(completion: { 
-            self.game?.picks[indexPath.row].isPicked = true
+        if self.game?.sender != UIDevice.current.identifierForVendor!.uuidString {
+            guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a BodyPartCell") }
             
-            if (self.game?.picks[indexPath.row].isUnlucky)! {
-                self.delegate?.mainGameViewControllerGameOver(controller: self)
+            cell.flipCard(completion: { 
+                self.game?.picks[indexPath.row].isPicked = true
                 
-            } else {
-                self.delegate?.mainGameViewControllerPickSelected(controller: self)
-            }
-        })
+                if (self.game?.picks[indexPath.row].isUnlucky)! {
+                    self.delegate?.mainGameViewControllerGameOver(controller: self)
+                    
+                } else {
+                    self.delegate?.mainGameViewControllerPickSelected(controller: self)
+                }
+            })
+        }
     }
 }
 

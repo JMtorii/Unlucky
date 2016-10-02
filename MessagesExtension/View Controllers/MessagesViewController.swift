@@ -13,9 +13,7 @@ import Messages
 let UserDefaultsIsSent = "USER_DEFAULTS_IS_SENT"
 
 class MessagesViewController: MSMessagesAppViewController {
-    
-    var cancelledGame: Game?
-    
+        
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
@@ -41,7 +39,6 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
-        cancelledGame = Game(message: message)
         print("Cancelled")
     }
 
@@ -57,11 +54,7 @@ class MessagesViewController: MSMessagesAppViewController {
             controller = instantiateStartGameViewController()
             
         } else {
-            game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!    
-            if cancelledGame != nil {
-                game = cancelledGame!
-            }
-            
+            game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!            
             controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!)
         }
             
@@ -95,7 +88,7 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     private func instantiateMainGameViewController(game: Game) -> UIViewController {
-        let controller = MainGameViewController(game: game, isCancelledGame: (self.cancelledGame != nil))
+        let controller = MainGameViewController(game: game)
         controller.delegate = self
         
         return controller
@@ -165,8 +158,6 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         }
         
         // reset cancelled game object
-        self.cancelledGame = nil
-//        self.isSent = true
         UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
         
         dismiss()
@@ -220,7 +211,6 @@ extension MessagesViewController: GameOverViewControllerDelegate {
         }
         
         // reset cancelled game object
-        self.cancelledGame = nil
         UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
 
         dismiss()
