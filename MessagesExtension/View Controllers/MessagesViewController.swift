@@ -81,7 +81,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!            
             }
             
-            controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!)
+            controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!, currentUuid: conversation.localParticipantIdentifier.uuidString)
         }
             
         // Remove any existing child controllers.
@@ -113,8 +113,8 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    private func instantiateMainGameViewController(game: Game) -> UIViewController {
-        let controller = MainGameViewController(game: game)
+    private func instantiateMainGameViewController(game: Game, currentUuid: String) -> UIViewController {
+        let controller = MainGameViewController(game: game, currentUuid: currentUuid)
         controller.delegate = self
         
         return controller
