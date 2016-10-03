@@ -15,7 +15,7 @@ let UserDefaultsIsSent = "USER_DEFAULTS_IS_SENT"
 class MessagesViewController: MSMessagesAppViewController {
         
     // MARK: - Conversation Handling
-    
+        
     override func willBecomeActive(with conversation: MSConversation) {
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
@@ -40,6 +40,21 @@ class MessagesViewController: MSMessagesAppViewController {
     
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
         print("Cancelled")
+        let game = Game(message: message)
+        
+        if !(game?.isFirstMove())! {
+            let userDefaults = UserDefaults.standard
+            var rawPicks: [String] = []
+            for pick in (game?.picks)! {
+                rawPicks.append(pick.rawValue())
+            }
+            
+            let encodedRawPicksData = NSKeyedArchiver.archivedData(withRootObject: rawPicks)
+            userDefaults.set(encodedRawPicksData, forKey: "cancelledRawPicks")
+            userDefaults.set(game?.sender, forKey: "cancelledSender")
+            
+            userDefaults.synchronize()  
+        }
     }
 
     
@@ -54,7 +69,21 @@ class MessagesViewController: MSMessagesAppViewController {
             controller = instantiateStartGameViewController()
             
         } else {
-            game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!            
+            if let decodedRawPicksData = UserDefaults.standard.object(forKey: "cancelledRawPicks") as? NSData, let decodedSender = UserDefaults.standard.string(forKey: "cancelledSender") {
+                if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
+                    print("decoded cancelled game")
+                    game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
+                    UserDefaults.standard.removeObject(forKey: "cancelledRawPicks")
+                    UserDefaults.standard.removeObject(forKey: "cancelledSender")
+                    
+                } else {
+                    game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!
+                }
+                
+            } else {
+                game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!            
+            }
+            
             controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!)
         }
             

@@ -46,7 +46,7 @@ struct Pick {
         self.isPicked = Bool(isPickedDecoded)      
     }
     
-    fileprivate func rawValue() -> String {
+    func rawValue() -> String {
         return "{\"isUnlucky\": \"\(String(self.isUnlucky))\", \"isPicked\": \"\(String(self.isPicked))\" }"
     }
 }

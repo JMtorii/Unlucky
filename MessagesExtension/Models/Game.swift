@@ -12,12 +12,11 @@ import Messages
 let GamePickQueryItemKey:String = "Pick"
 let GameSenderQueryItemKey:String = "Sender"
 
-struct Game {
+class Game {
     var picks: [Pick]
     var sender: String?
-}
+    
 
-extension Game {
     // Initializer for a new game
     init?(numPicks: Int) {
         if numPicks == 0 {
@@ -35,20 +34,8 @@ extension Game {
         }        
     }
     
-    func isOver() -> Bool {
-        for pick in picks {
-            if pick.isPicked && pick.isUnlucky {
-                return true
-            }
-        }
-        
-        return false
-    }
-}
-
-extension Game {
     // this is an initializer used when parsing received message
-    init?(queryItems: [URLQueryItem]) {        
+    init(queryItems: [URLQueryItem]) {        
         self.picks = [Pick]()
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
@@ -63,6 +50,71 @@ extension Game {
         }        
     }
     
+    init?(rawPicks: [String], sender: String) {        
+        self.picks = [Pick]()
+        for rawPick in rawPicks {
+            self.picks.append(Pick(rawValue: rawPick))
+        }
+        
+        self.sender = sender 
+    }
+    
+    // For some reason, I can't save this objecct into NSUserDefaults
+//    required init?(coder aDecoder: NSCoder) {
+//        guard let rawPicks = aDecoder.decodeObject(forKey: "picks") as? [String], let sender = aDecoder.decodeObject(forKey: "sender") as? String else { 
+//            return nil 
+//        }
+//        
+//        self.picks = [Pick]()
+//        for rawPick in rawPicks {
+//            self.picks.append(Pick(rawValue: rawPick))
+//        }
+//        
+//        self.sender = sender        
+//    }
+    
+//    func encode(with aCoder: NSCoder) {
+//        aCoder.encode(self.generateRawPicks() as NSArray, forKey: "picks")
+//        aCoder.encode(self.sender, forKey: "sender")
+//    }
+    
+    func isOver() -> Bool {
+        for pick in self.picks {
+            if pick.isPicked && pick.isUnlucky {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func isFirstMove() -> Bool {
+        var onePicked: Bool = false
+        for pick in self.picks {
+            if pick.isPicked! {
+                if onePicked {
+                    return false
+                } else {
+                    onePicked = true
+                }
+            }
+        }
+        
+        return onePicked
+    }
+    
+    private func generateRawPicks() -> [String] {
+        var rawPicks: [String] = []
+        
+        for pick in self.picks {
+            rawPicks.append(pick.rawValue())
+        }
+        
+        return rawPicks
+    }
+}
+
+extension Game {    
     // this is sent in the message from delegate in MainGameViewController
     var queryItems: [URLQueryItem] {
         var items = [URLQueryItem]()
@@ -81,10 +133,9 @@ extension Game {
 }
 
 extension Game {
-    init?(message: MSMessage?) {
+    convenience init?(message: MSMessage?) {
         guard let messageURL = message?.url else { return nil }
         guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else { return nil }
         self.init(queryItems: queryItems)
     }
 }
-   
