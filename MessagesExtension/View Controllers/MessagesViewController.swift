@@ -10,7 +10,8 @@ import UIKit
 import Foundation
 import Messages
 
-let UserDefaultsIsSent = "USER_DEFAULTS_IS_SENT"
+let UserDefaultsCancelledRawPicksKey = "cancelledRawPicks"
+let UserDefaultsCancelledSenderKey = "cancelledSender"
 
 class MessagesViewController: MSMessagesAppViewController {
         
@@ -34,10 +35,6 @@ class MessagesViewController: MSMessagesAppViewController {
         presentViewController(for: conversation, with: presentationStyle)
     }
     
-    override func didReceive(_ message: MSMessage, conversation: MSConversation) {
-        UserDefaults.standard.set(false, forKey: UserDefaultsIsSent)
-    }
-    
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
         print("Cancelled")
         let game = Game(message: message)
@@ -50,8 +47,8 @@ class MessagesViewController: MSMessagesAppViewController {
             }
             
             let encodedRawPicksData = NSKeyedArchiver.archivedData(withRootObject: rawPicks)
-            userDefaults.set(encodedRawPicksData, forKey: "cancelledRawPicks")
-            userDefaults.set(game?.sender, forKey: "cancelledSender")
+            userDefaults.set(encodedRawPicksData, forKey: UserDefaultsCancelledRawPicksKey)
+            userDefaults.set(game?.sender, forKey: UserDefaultsCancelledSenderKey)
             
             userDefaults.synchronize()  
         }
@@ -69,12 +66,12 @@ class MessagesViewController: MSMessagesAppViewController {
             controller = instantiateStartGameViewController()
             
         } else {
-            if let decodedRawPicksData = UserDefaults.standard.object(forKey: "cancelledRawPicks") as? NSData, let decodedSender = UserDefaults.standard.string(forKey: "cancelledSender") {
+            if let decodedRawPicksData = UserDefaults.standard.object(forKey: UserDefaultsCancelledRawPicksKey) as? NSData, let decodedSender = UserDefaults.standard.string(forKey: UserDefaultsCancelledSenderKey) {
                 if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
-                    print("decoded cancelled game")
+                    print("Decoded cancelled game")
                     game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
-                    UserDefaults.standard.removeObject(forKey: "cancelledRawPicks")
-                    UserDefaults.standard.removeObject(forKey: "cancelledSender")
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsCancelledRawPicksKey)
+                    UserDefaults.standard.removeObject(forKey: UserDefaultsCancelledSenderKey)
                     
                 } else {
                     game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!
@@ -186,9 +183,6 @@ extension MessagesViewController: MainGameViewControllerDelegate {
             }
         }
         
-        // reset cancelled game object
-        UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
-        
         dismiss()
     }
     
@@ -238,9 +232,6 @@ extension MessagesViewController: GameOverViewControllerDelegate {
                 print(error)
             }
         }
-        
-        // reset cancelled game object
-        UserDefaults.standard.set(true, forKey: UserDefaultsIsSent)
 
         dismiss()
     }
