@@ -116,7 +116,7 @@ class Game {
 
 extension Game {    
     // this is sent in the message from delegate in MainGameViewController
-    var queryItems: [URLQueryItem] {
+    func queryItems(uuid: String) -> [URLQueryItem] {
         var items = [URLQueryItem]()
         
         // attach all picks
@@ -125,7 +125,6 @@ extension Game {
         }
         
         // attach the sender
-        let uuid:String = UIDevice.current.identifierForVendor!.uuidString
         items.append(URLQueryItem(name: GameSenderQueryItemKey, value: uuid))
 
         return items

@@ -134,9 +134,9 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil, layoutImage: UIImage) -> MSMessage {
+    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil, layoutImage: UIImage, uuid: String) -> MSMessage {
         var components = URLComponents()
-        components.queryItems = game.queryItems
+        components.queryItems = game.queryItems(uuid: uuid)
         
         let layout = MSMessageTemplateLayout()
         layout.image = layoutImage
@@ -174,7 +174,7 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         let messageCaption: String = NSLocalizedString("Let's play", comment: "")
         
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"logo")!)
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"logo")!, uuid: conversation.localParticipantIdentifier.uuidString)
 
         // Add the message to the conversation.
         conversation.insert(message) { error in
@@ -224,7 +224,7 @@ extension MessagesViewController: GameOverViewControllerDelegate {
         let messageCaption: String = NSLocalizedString("I lost! :(", comment: "")
         
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named: "logo")!)
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named: "logo")!, uuid: conversation.localParticipantIdentifier.uuidString)
         
         // Add the message to the conversation.
         conversation.insert(message) { error in
