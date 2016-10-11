@@ -73,14 +73,10 @@ class MainGameViewController: UIViewController {
                 
         
         // gameCollectionView
-//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.minimumInteritemSpacing = 10.0
-//        layout.minimumLineSpacing = 10.0
-//        layout.sectionInset = UIEdgeInsets(top: 20.0, left: 40.0, bottom: 20.0, right: 40.0)
-//        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         
-//        gameCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        gameCollectionView = UICollectionView(frame: .zero)
+        gameCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         gameCollectionView.delegate = self
         gameCollectionView.translatesAutoresizingMaskIntoConstraints = false
         gameCollectionView.delegate = self
@@ -112,6 +108,9 @@ extension MainGameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
         
+//        cell.setNeedsUpdateConstraints()
+//        cell.updateConstraintsIfNeeded()
+        
         if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
         }
@@ -141,19 +140,33 @@ extension MainGameViewController: UICollectionViewDelegate {
 
 extension MainGameViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 0, height: 0)
+        let windowRect = self.view.window?.frame;
+        let windowWidth = windowRect?.size.width;
+        let cellWidth = windowWidth! * 0.23
+        let cellHeight = cellWidth * 1.5
+        
+//        return CGSize(width: cellWidth, height: cellHeight)
+        print("cellWidth: \(cellWidth), cellHeight: \(cellHeight)")
+        return CGSize(width: cellWidth, height: cellHeight)
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        let windowRect = self.view.window?.frame;
+        let windowWidth = windowRect?.size.width;
+        let sideInset = windowWidth! * 0.1
+        print("sideInset: \(sideInset)")
+        return UIEdgeInsetsMake(40.0, sideInset, 40.0, sideInset)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat()
+        let windowRect = self.view.window?.frame;
+        let windowWidth = windowRect?.size.width;
+        let lineSpacing = windowWidth! * 0.03
+        
+        print("line spacing: \(lineSpacing)")
+
+        return lineSpacing
     }
 }
 

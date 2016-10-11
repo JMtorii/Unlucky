@@ -16,37 +16,31 @@ class StartGameViewController: UIViewController {
         super.viewDidLoad()
         
         // self.view
+        self.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.backgroundColor = UIColor(red: (61.0 / 255.0), green: (111.0 / 255.0), blue: (122.0 / 255.5), alpha: 1.0)
         
-        let stackView = UIStackView()
-        stackView.backgroundColor = .gray
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 0.0
-        stackView.distribution = .fill
-        stackView.layoutMargins = UIEdgeInsetsMake(0.0, 30.0, 0.0, 30.0)
-        stackView.isLayoutMarginsRelativeArrangement = true
         
-        self.view.addSubview(stackView)
-        self.view.addConstraint(NSLayoutConstraint(item: stackView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leadingMargin, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: stackView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailingMargin, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: stackView, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: stackView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
-
-//        let containerView = UIView()
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        containerView.backgroundColor = .gray
-//        
-//        self.view.addSubview(containerView)
-//        self.view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerX, relatedBy: .equal, toItem: containerView.superview, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-//        self.view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: containerView.superview, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        // why the fuck do I have to do this. shouldn't the bottomlayoutguide handle this?
+        let bottomContainer = UIView()
+        bottomContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bottomContainer)
         
-        let spacer1 = UIView()
-        spacer1.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -44.0))
+        self.view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: bottomContainer, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
         
-        stackView.addArrangedSubview(spacer1)
-        stackView.addConstraint(NSLayoutConstraint(item: spacer1, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 20.0))
+        
+        // container view
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .gray
+                
+        bottomContainer.addSubview(containerView)
+        bottomContainer.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerX, relatedBy: .equal, toItem: bottomContainer, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        bottomContainer.addConstraint(NSLayoutConstraint(item: containerView, attribute: .width, relatedBy: .equal, toItem: bottomContainer, attribute: .width, multiplier: 0.75, constant: 0.0))
+        bottomContainer.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: bottomContainer, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        bottomContainer.addConstraint(NSLayoutConstraint(item: containerView, attribute: .height, relatedBy: .equal, toItem: bottomContainer, attribute: .height, multiplier: 0.8, constant: 0.0))
         
     
         // logoImageView
@@ -56,10 +50,15 @@ class StartGameViewController: UIViewController {
         logoImageView.image = logoImage
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.backgroundColor = .yellow
+        logoImageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
+        logoImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .vertical)
         
-//        stackView.addArrangedSubview(logoImageView);
-//        stackView.addConstraint(NSLayoutConstraint(item: logoImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 70.0))
-        
+        containerView.addSubview(logoImageView);
+        containerView.addConstraint(NSLayoutConstraint(item: logoImageView, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1.0, constant: 0.0))
+        containerView.addConstraint(NSLayoutConstraint(item: logoImageView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40.0))
+        containerView.addConstraint(NSLayoutConstraint(item: logoImageView, attribute: .width, relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 1.0, constant: 0.0))
+        containerView.addConstraint(NSLayoutConstraint(item: logoImageView, attribute: .centerX, relatedBy: .equal, toItem: containerView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+
         
         // startButton
         let startButton = UIButton()
@@ -70,8 +69,12 @@ class StartGameViewController: UIViewController {
         startButton.layer.cornerRadius = 5.0
         startButton.addTarget(self, action: #selector(self.startButtonClicked), for: .touchUpInside)
         
-//        stackView.addArrangedSubview(startButton)
-//        stackView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30.0))
+        containerView.addSubview(startButton)
+        containerView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        containerView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .top, relatedBy: .equal, toItem: logoImageView, attribute: .bottom, multiplier: 1.0, constant: 10.0))
+        containerView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 40.0))
+        containerView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .width, relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 1.0, constant: 0.0))
+        containerView.addConstraint(NSLayoutConstraint(item: startButton, attribute: .centerX, relatedBy: .equal, toItem: containerView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
     }
     
     func startButtonClicked(sender:UIButton!) {
