@@ -20,40 +20,33 @@ class GameCollectionViewCell: UICollectionViewCell {
         
         let backCardImage = UIImage(named: "back-card")
         let frontCardImage = UIImage(named: "front-card")
-
-        // assumption is that back card and front card aspect ratio is the same
-        let backCardAspect: CGFloat = (backCardImage!.size.height) / (backCardImage!.size.width);
-        
-        
-        // self view
-        self.contentView.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.backgroundColor = .green
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.contentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 90.0))
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 150.0))
         
         
         // card container
         self.cardContainer = UIView()
         self.cardContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.cardContainer.backgroundColor = .blue
         
-//        self.contentView.addSubview(self.cardContainer)
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .width, relatedBy: .equal, toItem: self.contentView, attribute: .width, multiplier: 1.0, constant: 0.0))
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .height, relatedBy: .equal, toItem: self.cardContainer, attribute: .width, multiplier: backCardAspect, constant: 0.0))
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .centerX, relatedBy: .equal, toItem: self.contentView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-//        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .centerY, relatedBy: .equal, toItem: self.contentView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-
+        self.contentView.addSubview(self.cardContainer)
+        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .width, relatedBy: .equal, toItem: self.contentView, attribute: .width, multiplier: 1.0, constant: 0.0))
+        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .height, relatedBy: .equal, toItem: self.contentView, attribute: .height, multiplier: 1.0, constant: 0.0))
+        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .centerX, relatedBy: .equal, toItem: self.contentView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .centerY, relatedBy: .equal, toItem: self.contentView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        
         
         // back card
         self.backCardImageView = UIImageView(image: backCardImage)
         self.backCardImageView.translatesAutoresizingMaskIntoConstraints = false
         self.backCardImageView.contentMode = .scaleAspectFit
         self.backCardImageView.isHidden = false
+        self.backCardImageView.backgroundColor = .black
+        self.backCardImageView.clipsToBounds = true
         
-//        self.cardContainer.addSubview(self.backCardImageView)
-//        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .width, relatedBy: .equal, toItem: self.cardContainer, attribute: .width, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .height, relatedBy: .equal, toItem: self.cardContainer, attribute: .height, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .centerX, relatedBy: .equal, toItem: self.cardContainer, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .centerY, relatedBy: .equal, toItem: self.cardContainer, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.cardContainer.addSubview(self.backCardImageView)
+        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .top, relatedBy: .equal, toItem: self.cardContainer, attribute: .top, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .bottom, relatedBy: .equal, toItem: self.cardContainer, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .left, relatedBy: .equal, toItem: self.cardContainer, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.backCardImageView, attribute: .right, relatedBy: .equal, toItem: self.cardContainer, attribute: .right, multiplier: 1.0, constant: 0.0))
         
         
         // front card
@@ -61,12 +54,13 @@ class GameCollectionViewCell: UICollectionViewCell {
         self.frontCardImageView.translatesAutoresizingMaskIntoConstraints = false
         self.frontCardImageView.contentMode = .scaleAspectFit
         self.frontCardImageView.isHidden = true
-        
-//        self.cardContainer.addSubview(self.frontCardImageView)
-//        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .width, relatedBy: .equal, toItem: self.cardContainer, attribute: .width, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .height, relatedBy: .equal, toItem: self.frontCardImageView, attribute: .height, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .centerX, relatedBy: .equal, toItem: self.cardContainer, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-//        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .centerY, relatedBy: .equal, toItem: self.cardContainer, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.frontCardImageView.clipsToBounds = true
+
+        self.cardContainer.addSubview(self.frontCardImageView)
+        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .top, relatedBy: .equal, toItem: self.cardContainer, attribute: .top, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .bottom, relatedBy: .equal, toItem: self.cardContainer, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .left, relatedBy: .equal, toItem: self.cardContainer, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: self.frontCardImageView, attribute: .right, relatedBy: .equal, toItem: self.cardContainer, attribute: .right, multiplier: 1.0, constant: 0.0))
     }
     
     required init?(coder aDecoder: NSCoder) {

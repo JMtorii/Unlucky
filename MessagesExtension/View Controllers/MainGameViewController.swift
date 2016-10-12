@@ -77,7 +77,6 @@ class MainGameViewController: UIViewController {
         layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         
         gameCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        gameCollectionView.delegate = self
         gameCollectionView.translatesAutoresizingMaskIntoConstraints = false
         gameCollectionView.delegate = self
         gameCollectionView.dataSource = self
@@ -107,9 +106,6 @@ extension MainGameViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
-        
-//        cell.setNeedsUpdateConstraints()
-//        cell.updateConstraintsIfNeeded()
         
         if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
@@ -145,7 +141,6 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = windowWidth! * 0.23
         let cellHeight = cellWidth * 1.5
         
-//        return CGSize(width: cellWidth, height: cellHeight)
         print("cellWidth: \(cellWidth), cellHeight: \(cellHeight)")
         return CGSize(width: cellWidth, height: cellHeight)
 
