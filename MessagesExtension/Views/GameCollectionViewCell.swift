@@ -25,7 +25,6 @@ class GameCollectionViewCell: UICollectionViewCell {
         // card container
         self.cardContainer = UIView()
         self.cardContainer.translatesAutoresizingMaskIntoConstraints = false
-        self.cardContainer.backgroundColor = .blue
         
         self.contentView.addSubview(self.cardContainer)
         self.contentView.addConstraint(NSLayoutConstraint(item: self.cardContainer, attribute: .width, relatedBy: .equal, toItem: self.contentView, attribute: .width, multiplier: 1.0, constant: 0.0))
@@ -39,7 +38,6 @@ class GameCollectionViewCell: UICollectionViewCell {
         self.backCardImageView.translatesAutoresizingMaskIntoConstraints = false
         self.backCardImageView.contentMode = .scaleAspectFit
         self.backCardImageView.isHidden = false
-        self.backCardImageView.backgroundColor = .black
         self.backCardImageView.clipsToBounds = true
         
         self.cardContainer.addSubview(self.backCardImageView)

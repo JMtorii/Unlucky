@@ -14,10 +14,6 @@ class MainGameViewController: UIViewController {
     var game: Game?
     var currentUuid: String?
     
-    var scrollView: UIScrollView!
-    var stackView: UIStackView!
-    var titleLabel: UILabel!
-    var gameCollectionView: UICollectionView!
     
     init(game: Game, currentUuid: String) {
         super.init(nibName: nil, bundle: nil)
@@ -29,65 +25,54 @@ class MainGameViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        self.view.backgroundColor = .blue
+    override func viewDidLoad() {        
+        let backgroundView = UIImageView(image: UIImage(named: "game-background"))
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.contentMode = .scaleAspectFill
         
-        // scrollView
-        scrollView = UIScrollView()
-        scrollView.backgroundColor = .yellow
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(backgroundView)
+        self.view.addConstraint(NSLayoutConstraint(item: backgroundView, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: backgroundView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: backgroundView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: backgroundView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
         
-        self.view.addSubview(scrollView)
-        self.view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0))
-        
-        
-        // stackView
-        stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.backgroundColor = .green
-        
-        scrollView.addSubview(stackView)
-        scrollView.addConstraint(NSLayoutConstraint(item: stackView, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1.0, constant: 0.0))
-        scrollView.addConstraint(NSLayoutConstraint(item: stackView, attribute: .centerX, relatedBy: .equal, toItem: scrollView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        scrollView.addConstraint(NSLayoutConstraint(item: stackView, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1.0, constant: 0.0))
-        scrollView.addConstraint(NSLayoutConstraint(item: stackView, attribute: .bottom, relatedBy: .equal, toItem: scrollView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-
         
         // titleLabel
-        titleLabel = UILabel()
+        let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = NSLocalizedString("Choose an item!", comment: "Title for the main game")
         titleLabel.textColor = UIColor(white: 1.0, alpha: 1.0)
         titleLabel.font = UIFont(name: "Verdana", size: 20.0)
         titleLabel.textAlignment = .center
-        titleLabel.backgroundColor = .black
+        titleLabel.backgroundColor = .blue
         
-        stackView.addArrangedSubview(titleLabel)
-        scrollView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 60.0))
-                
+        self.view.addSubview(titleLabel)
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 60.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+
         
         // gameCollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         
-        gameCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let gameCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         gameCollectionView.translatesAutoresizingMaskIntoConstraints = false
         gameCollectionView.delegate = self
         gameCollectionView.dataSource = self
         gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
-        gameCollectionView.backgroundColor = .white
+        gameCollectionView.backgroundColor = .clear
         gameCollectionView.isScrollEnabled = false
+        gameCollectionView.allowsMultipleSelection = false
         
-        stackView.addArrangedSubview(gameCollectionView)
+        self.view.addSubview(gameCollectionView)
         print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
-
-        stackView.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 500.0))
+        
+        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
         
         if self.game?.sender == self.currentUuid {
             titleLabel.text = NSLocalizedString("It's your buddy's turn!", comment: "Temporary title for the main game")
@@ -106,7 +91,7 @@ extension MainGameViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
-        
+
         if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
         }
@@ -118,7 +103,7 @@ extension MainGameViewController: UICollectionViewDataSource {
 extension MainGameViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.game?.sender != self.currentUuid {
-            guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a BodyPartCell") }
+            guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a GameCollectionCell") }
             
             cell.flipCard(completion: { 
                 self.game?.picks[indexPath.row].isPicked = true
@@ -150,6 +135,7 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let windowRect = self.view.window?.frame;
         let windowWidth = windowRect?.size.width;
         let sideInset = windowWidth! * 0.1
+        
         print("sideInset: \(sideInset)")
         return UIEdgeInsetsMake(40.0, sideInset, 40.0, sideInset)
     }
@@ -160,7 +146,6 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let lineSpacing = windowWidth! * 0.03
         
         print("line spacing: \(lineSpacing)")
-
         return lineSpacing
     }
 }
