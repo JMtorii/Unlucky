@@ -25,7 +25,9 @@ class MainGameViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {        
+    override func viewDidLoad() {  
+        
+        // backgroundView
         let backgroundView = UIImageView(image: UIImage(named: "game-background"))
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.contentMode = .scaleAspectFill
@@ -37,20 +39,32 @@ class MainGameViewController: UIViewController {
         self.view.addConstraint(NSLayoutConstraint(item: backgroundView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
         
         
+        // titleBackgroundView
+        let titleBackgroundView = UIImageView(image: UIImage(named:"title-background"))
+        titleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        titleBackgroundView.contentMode = .scaleToFill
+        
+        self.view.addSubview(titleBackgroundView)
+        self.view.addConstraint(NSLayoutConstraint(item: titleBackgroundView, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0.13, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleBackgroundView, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 0.9, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleBackgroundView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleBackgroundView, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 30.0))
+        
+        
         // titleLabel
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = NSLocalizedString("Choose an item!", comment: "Title for the main game")
         titleLabel.textColor = UIColor(white: 1.0, alpha: 1.0)
-        titleLabel.font = UIFont(name: "Verdana", size: 20.0)
-        titleLabel.textAlignment = .center
-        titleLabel.backgroundColor = .blue
+        titleLabel.font = UIFont(name: "Verdana", size: 18.0)
+        titleLabel.textAlignment = .left
+//        titleLabel.backgroundColor = .blue
         
         self.view.addSubview(titleLabel)
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 60.0))
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: self.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: titleBackgroundView, attribute: .height, multiplier: 0.83, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: titleBackgroundView, attribute: .width, multiplier: 0.9, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 20.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: titleBackgroundView, attribute: .top, multiplier: 1.0, constant: 0.0))
 
         
         // gameCollectionView
@@ -69,7 +83,7 @@ class MainGameViewController: UIViewController {
         self.view.addSubview(gameCollectionView)
         print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
         
-        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .top, relatedBy: .equal, toItem: titleBackgroundView, attribute: .bottom, multiplier: 1.0, constant: 20.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
