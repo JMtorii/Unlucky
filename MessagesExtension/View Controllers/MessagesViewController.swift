@@ -12,6 +12,8 @@ import Messages
 
 let UserDefaultsCancelledRawPicksKey = "cancelledRawPicks"
 let UserDefaultsCancelledSenderKey = "cancelledSender"
+let MessagesDefaultCardCount = 6
+
 
 class MessagesViewController: MSMessagesAppViewController {
         
@@ -74,11 +76,11 @@ class MessagesViewController: MSMessagesAppViewController {
                     UserDefaults.standard.removeObject(forKey: UserDefaultsCancelledSenderKey)
                     
                 } else {
-                    game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!
+                    game = Game(message: conversation.selectedMessage) ?? Game(numPicks: MessagesDefaultCardCount)!
                 }
                 
             } else {
-                game = Game(message: conversation.selectedMessage) ?? Game(numPicks: 6)!            
+                game = Game(message: conversation.selectedMessage) ?? Game(numPicks: MessagesDefaultCardCount)!            
             }
             
             controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!, currentUuid: conversation.localParticipantIdentifier.uuidString)

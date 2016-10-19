@@ -33,7 +33,7 @@ class StartGameViewController: UIViewController {
         // background image
         let backgroundImageView = UIImageView(image: UIImage(named: "unlucky-start-background"))
         backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.contentMode = .scaleToFill
         
         containerWithBottomInset.addSubview(backgroundImageView)
         containerWithBottomInset.addConstraint(NSLayoutConstraint(item: backgroundImageView, attribute: .centerX, relatedBy: .equal, toItem: containerWithBottomInset, attribute: .centerX, multiplier: 1.0, constant: 0.0))
