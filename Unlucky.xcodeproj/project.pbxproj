@@ -21,6 +21,7 @@
 		B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */; };
 		B6CE79F11D8B84CC002D3E86 /* StartGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */; };
 		B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */; };
+		B6DA11B01DB72D2B0049AAD5 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DA11AF1DB72D2B0049AAD5 /* UIImageExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainGameViewController.swift; sourceTree = "<group>"; };
+		B6DA11AF1DB72D2B0049AAD5 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,11 +160,20 @@
 				B606754E1D8E29B800039338 /* View Controllers */,
 				B658BA141D8F73B600C557DF /* Views */,
 				B606754D1D8E29A700039338 /* Models */,
+				B6DA11AE1DB72C660049AAD5 /* Utilities */,
 				B6B69B1C1D88C00D00325A59 /* MainInterface.storyboard */,
 				B6B69B1F1D88C00D00325A59 /* Assets.xcassets */,
 				B6B69B211D88C00D00325A59 /* Info.plist */,
 			);
 			path = MessagesExtension;
+			sourceTree = "<group>";
+		};
+		B6DA11AE1DB72C660049AAD5 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B6DA11AF1DB72D2B0049AAD5 /* UIImageExtension.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,6 +283,7 @@
 				B671C7B41D96CED200ED1DF3 /* QueryItemRepresentable.swift in Sources */,
 				B60675511D8E2A8300039338 /* Pick.swift in Sources */,
 				B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */,
+				B6DA11B01DB72D2B0049AAD5 /* UIImageExtension.swift in Sources */,
 				B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */,
 				B658BA161D8F74FA00C557DF /* GameCollectionViewCell.swift in Sources */,
 				B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */,

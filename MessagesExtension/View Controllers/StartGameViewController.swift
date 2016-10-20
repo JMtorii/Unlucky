@@ -45,9 +45,12 @@ class StartGameViewController: UIViewController {
         // startButton
         let startButton = UIButton()
         startButton.translatesAutoresizingMaskIntoConstraints = false
-        startButton.backgroundColor = .black
         startButton.setTitleColor(.white, for: .normal)
-        startButton.setTitle("Start", for: .normal)
+        startButton.setTitleColor(.black, for: .highlighted)
+        startButton.setTitle("Start", for: .normal)   
+        startButton.setTitle("Start", for: .highlighted)        
+        startButton.setBackgroundImage(UIImage(named: "start-background-normal"), for: .normal)
+        startButton.setBackgroundImage(UIImage(named: "start-background-highlight"), for: .highlighted)
         startButton.titleLabel?.font = .boldSystemFont(ofSize: 20.0);
         startButton.layer.cornerRadius = 5.0
         startButton.addTarget(self, action: #selector(self.startButtonClicked), for: .touchUpInside)
@@ -62,7 +65,7 @@ class StartGameViewController: UIViewController {
     func startButtonClicked(sender:UIButton!) {
         NSLog("Hi");
         self.delegate?.startGameViewControllerDidSelectStart(self)
-    }
+    }    
 }
 
 /**

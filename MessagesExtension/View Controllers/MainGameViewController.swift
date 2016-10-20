@@ -58,12 +58,11 @@ class MainGameViewController: UIViewController {
         titleLabel.textColor = UIColor(white: 1.0, alpha: 1.0)
         titleLabel.font = UIFont(name: "Verdana", size: 18.0)
         titleLabel.textAlignment = .left
-//        titleLabel.backgroundColor = .blue
         
         self.view.addSubview(titleLabel)
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: titleBackgroundView, attribute: .height, multiplier: 0.83, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: titleBackgroundView, attribute: .width, multiplier: 0.9, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 20.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 30.0))
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: titleBackgroundView, attribute: .top, multiplier: 1.0, constant: 0.0))
 
         
@@ -76,7 +75,7 @@ class MainGameViewController: UIViewController {
         gameCollectionView.delegate = self
         gameCollectionView.dataSource = self
         gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
-        gameCollectionView.backgroundColor = UIColor(red: 237.0/255.0, green: 80.0/255.0, blue: 156.0/255.0, alpha: 1.0)
+        gameCollectionView.backgroundColor = UIColor(red: 237.0/255.0, green: 80.0/255.0, blue: 156.0/255.0, alpha: 0.7)
         gameCollectionView.isScrollEnabled = false
         gameCollectionView.allowsMultipleSelection = false
         
