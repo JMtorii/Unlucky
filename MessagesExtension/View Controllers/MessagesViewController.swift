@@ -173,10 +173,10 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
         
-        let messageCaption: String = NSLocalizedString("Let's play", comment: "")
+        let messageCaption: String = NSLocalizedString("Let's play", comment: "Message caption")
         
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"logo")!, uuid: conversation.localParticipantIdentifier.uuidString)
+        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"message-lucky")!, uuid: conversation.localParticipantIdentifier.uuidString)
 
         // Add the message to the conversation.
         conversation.insert(message) { error in
