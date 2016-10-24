@@ -63,7 +63,6 @@ class StartGameViewController: UIViewController {
     }
     
     func startButtonClicked(sender:UIButton!) {
-        NSLog("Hi");
         self.delegate?.startGameViewControllerDidSelectStart(self)
     }    
 }

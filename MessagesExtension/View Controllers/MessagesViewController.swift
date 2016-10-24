@@ -136,13 +136,13 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    fileprivate func composeMessage(with game: Game, caption: String, session: MSSession? = nil, layoutImage: UIImage, uuid: String) -> MSMessage {
+    fileprivate func composeMessage(with game: Game, session: MSSession? = nil, uuid: String) -> MSMessage {
         var components = URLComponents()
         components.queryItems = game.queryItems(uuid: uuid)
-        
+                
         let layout = MSMessageTemplateLayout()
-        layout.image = layoutImage
-        layout.caption = caption
+        layout.image = game.isOver() ? UIImage(named: "message-unlucky") : UIImage(named: "message-lucky")
+        layout.caption = game.isOver() ? "I'm unlucky... 😞" : "I'm lucky! 😉"
         
         let message = MSMessage(session: session ?? MSSession())
         message.url = components.url!
@@ -157,10 +157,6 @@ class MessagesViewController: MSMessagesAppViewController {
 
 extension MessagesViewController: StartGameViewControllerDelegate {
     func startGameViewControllerDidSelectStart(_ controller: StartGameViewController) {
-        /*
-         The user tapped the silhouette to start creating a new ice cream.
-         Change the presentation style to `.expanded`.
-         */
         requestPresentationStyle(.expanded)
     }
 }
@@ -172,11 +168,9 @@ extension MessagesViewController: MainGameViewControllerDelegate {
     func mainGameViewControllerPickSelected(controller: MainGameViewController) {
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
-        
-        let messageCaption: String = NSLocalizedString("Let's play", comment: "Message caption")
-        
+                
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named:"message-lucky")!, uuid: conversation.localParticipantIdentifier.uuidString)
+        let message = composeMessage(with: game, session: conversation.selectedMessage?.session, uuid: conversation.localParticipantIdentifier.uuidString)
 
         // Add the message to the conversation.
         conversation.insert(message) { error in
@@ -222,11 +216,9 @@ extension MessagesViewController: GameOverViewControllerDelegate {
     func gameOverViewControllerConfirmed(controller: GameOverViewController) {
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
-        
-        let messageCaption: String = NSLocalizedString("I lost! :(", comment: "")
-        
+                
         // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, caption: messageCaption, session: conversation.selectedMessage?.session, layoutImage: UIImage(named: "logo")!, uuid: conversation.localParticipantIdentifier.uuidString)
+        let message = composeMessage(with: game, session: conversation.selectedMessage?.session, uuid: conversation.localParticipantIdentifier.uuidString)
         
         // Add the message to the conversation.
         conversation.insert(message) { error in

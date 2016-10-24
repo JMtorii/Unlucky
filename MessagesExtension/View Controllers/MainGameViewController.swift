@@ -54,15 +54,15 @@ class MainGameViewController: UIViewController {
         // titleLabel
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = NSLocalizedString("Choose an item!", comment: "Title for the main game")
+        titleLabel.text = NSLocalizedString("Choose a card!", comment: "Title for the main game")
         titleLabel.textColor = UIColor(white: 1.0, alpha: 1.0)
-        titleLabel.font = UIFont(name: "Verdana", size: 18.0)
+        titleLabel.font = UIFont(name: "Verdana", size: 20.0)
         titleLabel.textAlignment = .left
         
         self.view.addSubview(titleLabel)
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: titleBackgroundView, attribute: .height, multiplier: 0.83, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: titleBackgroundView, attribute: .width, multiplier: 0.9, constant: 0.0))
-        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 30.0))
+        self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 40.0))
         self.view.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: titleBackgroundView, attribute: .top, multiplier: 1.0, constant: 0.0))
 
         
@@ -75,7 +75,7 @@ class MainGameViewController: UIViewController {
         gameCollectionView.delegate = self
         gameCollectionView.dataSource = self
         gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
-        gameCollectionView.backgroundColor = UIColor(red: 237.0/255.0, green: 80.0/255.0, blue: 156.0/255.0, alpha: 0.7)
+        gameCollectionView.backgroundColor = UIColor(white: 1.0, alpha: 0.7)
         gameCollectionView.isScrollEnabled = false
         gameCollectionView.allowsMultipleSelection = false
         
@@ -108,6 +108,8 @@ extension MainGameViewController: UICollectionViewDataSource {
         if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
         }
+        
+        print("index: \(indexPath)")
         
         return cell
     }

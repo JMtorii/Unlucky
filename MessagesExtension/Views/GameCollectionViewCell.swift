@@ -19,7 +19,7 @@ class GameCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         let backCardImage = UIImage(named: "back-card")
-        let frontCardImage = UIImage(named: "front-card")
+        let frontCardImage = UIImage(named: "front-lucky-card")
         
         
         // card container
@@ -65,10 +65,11 @@ class GameCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        self.frontCardImageView.image = nil
-        self.backCardImageView.image = nil
-    }
+    // Don't I need this?
+//    override func prepareForReuse() {
+//        self.frontCardImageView.image = nil
+//        self.backCardImageView.image = nil
+//    }
     
     func flipCard(completion: @escaping (Void) -> Void) {
         if (self.frontCardImageView.isHidden) {
