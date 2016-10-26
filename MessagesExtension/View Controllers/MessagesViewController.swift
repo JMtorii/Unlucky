@@ -142,7 +142,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 
         let layout = MSMessageTemplateLayout()
         layout.image = game.isOver() ? UIImage(named: "message-unlucky") : UIImage(named: "message-lucky")
-        layout.caption = game.isOver() ? "I'm unlucky... 😞" : "I'm lucky! 😉"
+        layout.caption = game.isOver() ? "I'm unlucky... 😞😿" : "I'm lucky! 😉😸"
         
         let message = MSMessage(session: session ?? MSSession())
         message.url = components.url!

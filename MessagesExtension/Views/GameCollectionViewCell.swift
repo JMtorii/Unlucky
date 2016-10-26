@@ -15,11 +15,12 @@ class GameCollectionViewCell: UICollectionViewCell {
     var frontCardImageView: UIImageView!
     var backCardImageView: UIImageView!
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         let backCardImage = UIImage(named: "back-card")
-        let frontCardImage = UIImage(named: "front-lucky-card")
+        let frontLuckyCardImage = UIImage(named: "front-lucky-card")
         
         
         // card container
@@ -48,7 +49,7 @@ class GameCollectionViewCell: UICollectionViewCell {
         
         
         // front card
-        self.frontCardImageView = UIImageView(image: frontCardImage)
+        self.frontCardImageView = UIImageView(image: frontLuckyCardImage)
         self.frontCardImageView.translatesAutoresizingMaskIntoConstraints = false
         self.frontCardImageView.contentMode = .scaleAspectFit
         self.frontCardImageView.isHidden = true
@@ -70,6 +71,10 @@ class GameCollectionViewCell: UICollectionViewCell {
 //        self.frontCardImageView.image = nil
 //        self.backCardImageView.image = nil
 //    }
+    
+    func setState(isUnlucky: Bool) {
+        self.frontCardImageView.image = (isUnlucky) ? UIImage(named: "front-unlucky-card") : UIImage(named: "front-lucky-card")
+    }
     
     func flipCard(completion: @escaping (Void) -> Void) {
         if (self.frontCardImageView.isHidden) {

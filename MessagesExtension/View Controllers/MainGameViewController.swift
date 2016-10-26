@@ -56,7 +56,7 @@ class MainGameViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = NSLocalizedString("Choose a card!", comment: "Title for the main game")
         titleLabel.textColor = UIColor(white: 1.0, alpha: 1.0)
-        titleLabel.font = UIFont(name: "Verdana", size: 20.0)
+        titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightRegular)
         titleLabel.textAlignment = .left
         
         self.view.addSubview(titleLabel)
@@ -104,6 +104,8 @@ extension MainGameViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GameCollectionViewCell.reuseIdentifier, for: indexPath as IndexPath) as? GameCollectionViewCell else { fatalError("Unable to dequeue a BodyPartCell") }
+        
+        cell.setState(isUnlucky: self.game!.picks[indexPath.row].isUnlucky)
 
         if (self.game?.picks[indexPath.row].isPicked)! {
             cell.enableCard()
