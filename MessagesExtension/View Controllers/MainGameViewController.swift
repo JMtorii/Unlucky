@@ -76,7 +76,7 @@ class MainGameViewController: UIViewController {
         gameCollectionView.dataSource = self
         gameCollectionView.register(GameCollectionViewCell.self, forCellWithReuseIdentifier: GameCollectionViewCell.reuseIdentifier)
         gameCollectionView.backgroundColor = UIColor(white: 1.0, alpha: 0.7)
-        gameCollectionView.isScrollEnabled = false
+        gameCollectionView.isScrollEnabled = true
         gameCollectionView.allowsMultipleSelection = false
         
         self.view.addSubview(gameCollectionView)
@@ -86,9 +86,11 @@ class MainGameViewController: UIViewController {
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: 0.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: 0.0))
-        
-        if self.game?.sender == self.currentUuid {
-            titleLabel.text = NSLocalizedString("It's your buddy's turn!", comment: "Temporary title for the main game")
+                
+        if (self.game?.isOver())! {
+            titleLabel.text = NSLocalizedString("The game is over!", comment: "Title for game that is over")
+        } else if self.game?.sender == self.currentUuid {
+            titleLabel.text = NSLocalizedString("It's your buddy's turn!", comment: "Title for game where it is the buddy's turn")
         }
     }
 }
@@ -122,16 +124,12 @@ extension MainGameViewController: UICollectionViewDelegate {
         if self.game?.sender != self.currentUuid {
             guard let cell = collectionView.cellForItem(at: indexPath) as! GameCollectionViewCell! else { fatalError("Unable to dequeue a GameCollectionCell") }
             
-            cell.flipCard(completion: { 
-                self.game?.picks[indexPath.row].isPicked = true
-                
-                if (self.game?.picks[indexPath.row].isUnlucky)! {
-                    self.delegate?.mainGameViewControllerGameOver(controller: self)
-                    
-                } else {
+            if !((self.game?.isOver())!) && self.game?.sender != self.currentUuid {
+                cell.flipCard(completion: { 
+                    self.game?.picks[indexPath.row].isPicked = true
                     self.delegate?.mainGameViewControllerPickSelected(controller: self)
-                }
-            })
+                })
+            }
         }
     }
 }
@@ -168,8 +166,6 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
 }
 
 protocol MainGameViewControllerDelegate: class {
-    func mainGameViewControllerPickSelected(controller: MainGameViewController)
-    
-    func mainGameViewControllerGameOver(controller: MainGameViewController)
+    func mainGameViewControllerPickSelected(controller: MainGameViewController)    
 }
 

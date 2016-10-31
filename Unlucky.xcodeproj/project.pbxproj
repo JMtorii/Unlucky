@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B606754C1D8E1F2400039338 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B606754B1D8E1F2400039338 /* Game.swift */; };
 		B60675511D8E2A8300039338 /* Pick.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60675501D8E2A8300039338 /* Pick.swift */; };
-		B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658BA121D8F3A0900C557DF /* GameOverViewController.swift */; };
 		B658BA161D8F74FA00C557DF /* GameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658BA151D8F74FA00C557DF /* GameCollectionViewCell.swift */; };
 		B671C7B41D96CED200ED1DF3 /* QueryItemRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671C7B31D96CED200ED1DF3 /* QueryItemRepresentable.swift */; };
 		B6B69B0C1D88C00D00325A59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B0B1D88C00D00325A59 /* Assets.xcassets */; };
@@ -18,7 +17,6 @@
 		B6B69B1B1D88C00D00325A59 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B69B1A1D88C00D00325A59 /* MessagesViewController.swift */; };
 		B6B69B1E1D88C00D00325A59 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B1C1D88C00D00325A59 /* MainInterface.storyboard */; };
 		B6B69B201D88C00D00325A59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6B69B1F1D88C00D00325A59 /* Assets.xcassets */; };
-		B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */; };
 		B6CE79F11D8B84CC002D3E86 /* StartGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */; };
 		B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */; };
 		B6DA11B01DB72D2B0049AAD5 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DA11AF1DB72D2B0049AAD5 /* UIImageExtension.swift */; };
@@ -51,7 +49,6 @@
 /* Begin PBXFileReference section */
 		B606754B1D8E1F2400039338 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		B60675501D8E2A8300039338 /* Pick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pick.swift; path = MessagesExtension/Models/Pick.swift; sourceTree = SOURCE_ROOT; };
-		B658BA121D8F3A0900C557DF /* GameOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		B658BA151D8F74FA00C557DF /* GameCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewCell.swift; sourceTree = "<group>"; };
 		B671C7B31D96CED200ED1DF3 /* QueryItemRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryItemRepresentable.swift; sourceTree = "<group>"; };
 		B6B69B081D88C00D00325A59 /* Unlucky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unlucky.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,7 +60,6 @@
 		B6B69B1D1D88C00D00325A59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B6B69B1F1D88C00D00325A59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6B69B211D88C00D00325A59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartGameViewController.swift; sourceTree = "<group>"; };
 		B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainGameViewController.swift; sourceTree = "<group>"; };
 		B6DA11AF1DB72D2B0049AAD5 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -104,8 +100,6 @@
 				B6B69B1A1D88C00D00325A59 /* MessagesViewController.swift */,
 				B6CE79F01D8B84CC002D3E86 /* StartGameViewController.swift */,
 				B6CE79F21D8B88FE002D3E86 /* MainGameViewController.swift */,
-				B658BA121D8F3A0900C557DF /* GameOverViewController.swift */,
-				B6C695301D9A28E800FA0A76 /* WinGameViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -221,7 +215,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = JMtorii;
 				TargetAttributes = {
 					B6B69B071D88C00D00325A59 = {
@@ -284,9 +278,7 @@
 				B60675511D8E2A8300039338 /* Pick.swift in Sources */,
 				B6CE79F31D8B88FE002D3E86 /* MainGameViewController.swift in Sources */,
 				B6DA11B01DB72D2B0049AAD5 /* UIImageExtension.swift in Sources */,
-				B658BA131D8F3A0900C557DF /* GameOverViewController.swift in Sources */,
 				B658BA161D8F74FA00C557DF /* GameCollectionViewCell.swift in Sources */,
-				B6C695311D9A28E800FA0A76 /* WinGameViewController.swift in Sources */,
 				B6B69B1B1D88C00D00325A59 /* MessagesViewController.swift in Sources */,
 				B6CE79F11D8B84CC002D3E86 /* StartGameViewController.swift in Sources */,
 				B606754C1D8E1F2400039338 /* Game.swift in Sources */,
@@ -333,6 +325,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -382,6 +375,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

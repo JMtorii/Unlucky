@@ -24,7 +24,7 @@ struct Pick {
                 
         do {
             let anyObj: Any? = try JSONSerialization.jsonObject(with: data as Data, options: .mutableContainers)
-            self.parseJson(anyObj: anyObj)
+            self.parseJson(anyObj: anyObj!)
             
         } catch {
             print(error)
@@ -51,10 +51,6 @@ struct Pick {
     }
 }
 
-/**
- Extends instances of `QueryItemRepresentable` that also conformt to `IceCreamPart`
- to provide a default implementation of `queryItem`.
- */
 extension Pick: QueryItemRepresentable {
     var queryItem: URLQueryItem {
         return URLQueryItem(name: self.queryItemKey, value: rawValue())

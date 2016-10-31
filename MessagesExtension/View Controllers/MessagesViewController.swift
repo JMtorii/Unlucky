@@ -83,7 +83,7 @@ class MessagesViewController: MSMessagesAppViewController {
                 game = Game(message: conversation.selectedMessage) ?? Game(numPicks: MessagesDefaultCardCount)!            
             }
             
-            controller = (game?.isOver())! ? instantiateWinGameViewController() : instantiateMainGameViewController(game: game!, currentUuid: conversation.localParticipantIdentifier.uuidString)
+            controller = instantiateMainGameViewController(game: game!, currentUuid: conversation.localParticipantIdentifier.uuidString)
         }
             
         // Remove any existing child controllers.
@@ -122,20 +122,6 @@ class MessagesViewController: MSMessagesAppViewController {
         return controller
     }
     
-    private func instantiateGameOverViewController(game: Game) -> UIViewController {
-        let controller = GameOverViewController(game: game)
-        controller.delegate = self
-        
-        return controller
-    }
-    
-    private func instantiateWinGameViewController() -> UIViewController {
-        let controller = WinGameViewController()
-        controller.delegate = self
-        
-        return controller
-    }
-    
     fileprivate func composeMessage(with game: Game, session: MSSession? = nil, uuid: String) -> MSMessage {
         var components = URLComponents()
         components.queryItems = game.queryItems(uuid: uuid)
@@ -157,6 +143,10 @@ class MessagesViewController: MSMessagesAppViewController {
 
 extension MessagesViewController: StartGameViewControllerDelegate {
     func startGameViewControllerDidSelectStart(_ controller: StartGameViewController) {
+        if let bundle = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundle)
+        }
+        
         requestPresentationStyle(.expanded)
     }
 }
@@ -181,58 +171,5 @@ extension MessagesViewController: MainGameViewControllerDelegate {
         
         dismiss()
     }
-    
-    func mainGameViewControllerGameOver(controller: MainGameViewController) {
-        let gameController = GameOverViewController(game: controller.game!)
-        gameController.delegate = self
-        
-        // Remove any existing child controllers.
-        for child in childViewControllers {
-            child.willMove(toParentViewController: nil)
-            child.view.removeFromSuperview()
-            child.removeFromParentViewController()
-        }
-        
-        // Embed the new controller
-        addChildViewController(gameController)
-        
-        gameController.view.frame = view.bounds
-        gameController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(gameController.view)
-        
-        gameController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        gameController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        gameController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        gameController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        gameController.didMove(toParentViewController: self)
-    }
 }
 
-
-// MARK: GameOverViewControllerDelegate
-
-extension MessagesViewController: GameOverViewControllerDelegate {
-    func gameOverViewControllerConfirmed(controller: GameOverViewController) {
-        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
-        guard let game = controller.game else { fatalError("Expected the controller to be displaying an ice cream") }
-                
-        // Create a new message with the same session as any currently selected message.
-        let message = composeMessage(with: game, session: conversation.selectedMessage?.session, uuid: conversation.localParticipantIdentifier.uuidString)
-        
-        // Add the message to the conversation.
-        conversation.insert(message) { error in
-            if let error = error {
-                print(error)
-            }
-        }
-
-        dismiss()
-    }
-}
-
-extension MessagesViewController: WinGameViewControllerDelegate {
-    func winGameViewControllerClosed(controller: WinGameViewController) {
-        // Do something here
-    }
-}
