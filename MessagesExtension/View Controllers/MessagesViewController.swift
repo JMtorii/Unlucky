@@ -35,27 +35,60 @@ class MessagesViewController: MSMessagesAppViewController {
         // Use this method to prepare for the change in presentation style.
         guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
         presentViewController(for: conversation, with: presentationStyle)
+        
+        if presentationStyle == .compact && self.presentationStyle == .expanded {
+            print("Changing to compact - transition")
+            if let decodedRawPicksData = UserDefaults.standard.object(forKey: UserDefaultsCancelledRawPicksKey) as? NSData, let decodedSender = UserDefaults.standard.string(forKey: UserDefaultsCancelledSenderKey) {
+                if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
+                    print("Decoded cancelled game")
+                    let game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
+//                    if let bundle = Bundle.main.bundleIdentifier {
+//                        UserDefaults.standard.removePersistentDomain(forName: bundle)
+//                    }
+                    let message = composeMessage(with: game!, session: conversation.selectedMessage?.session, uuid: conversation.localParticipantIdentifier.uuidString)
+                    
+                    conversation.insert(message) { error in
+                        if let error = error {
+                            print(error)
+                        }
+                    }
+                    
+                    dismiss()
+                }
+            }
+        }
     }
     
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
-        print("Cancelled")
-        let game = Game(message: message)
+        print("didCancelSending")
+
+        super.didCancelSending(message, conversation: conversation)
         
-        if !(game?.isFirstMove())! {
+        guard let game = Game(message: message) else { fatalError("Expected a valid game") }
+        
+        if !(game.isFirstMove()) {
             let userDefaults = UserDefaults.standard
             var rawPicks: [String] = []
-            for pick in (game?.picks)! {
+            for pick in game.picks {
                 rawPicks.append(pick.rawValue())
             }
             
             let encodedRawPicksData = NSKeyedArchiver.archivedData(withRootObject: rawPicks)
             userDefaults.set(encodedRawPicksData, forKey: UserDefaultsCancelledRawPicksKey)
-            userDefaults.set(game?.sender, forKey: UserDefaultsCancelledSenderKey)
+            userDefaults.set(game.sender, forKey: UserDefaultsCancelledSenderKey)
             
             userDefaults.synchronize()  
         }
     }
-
+    
+    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
+        print("didStartSending")
+        
+        super.didStartSending(message, conversation: conversation)
+        if let bundle = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundle)
+        }
+    }
     
     // MARK: Helper methods
     
@@ -72,8 +105,9 @@ class MessagesViewController: MSMessagesAppViewController {
                 if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
                     print("Decoded cancelled game")
                     game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
-                    UserDefaults.standard.removeObject(forKey: UserDefaultsCancelledRawPicksKey)
-                    UserDefaults.standard.removeObject(forKey: UserDefaultsCancelledSenderKey)
+//                    if let bundle = Bundle.main.bundleIdentifier {
+//                        UserDefaults.standard.removePersistentDomain(forName: bundle)
+//                    }
                     
                 } else {
                     game = Game(message: conversation.selectedMessage) ?? Game(numPicks: MessagesDefaultCardCount)!

@@ -59,7 +59,7 @@ class Game {
         self.sender = sender 
     }
     
-    // For some reason, I can't save this objecct into NSUserDefaults
+    // For some reason, I can't save this object into NSUserDefaults
 //    required init?(coder aDecoder: NSCoder) {
 //        guard let rawPicks = aDecoder.decodeObject(forKey: "picks") as? [String], let sender = aDecoder.decodeObject(forKey: "sender") as? String else { 
 //            return nil 

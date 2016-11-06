@@ -80,7 +80,7 @@ class MainGameViewController: UIViewController {
         gameCollectionView.allowsMultipleSelection = false
         
         self.view.addSubview(gameCollectionView)
-        print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
+//        print("Height: \(gameCollectionView.collectionViewLayout.collectionViewContentSize.height)")
         
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .top, relatedBy: .equal, toItem: titleBackgroundView, attribute: .bottom, multiplier: 1.0, constant: 15.0))
         self.view.addConstraint(NSLayoutConstraint(item: gameCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.bottomLayoutGuide, attribute: .top, multiplier: 1.0, constant: 0.0))
@@ -113,7 +113,7 @@ extension MainGameViewController: UICollectionViewDataSource {
             cell.enableCard()
         }
         
-        print("index: \(indexPath)")
+//        print("index: \(indexPath)")
         
         return cell
     }
@@ -141,7 +141,7 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = windowWidth! * 0.23
         let cellHeight = cellWidth * 1.5
         
-        print("cellWidth: \(cellWidth), cellHeight: \(cellHeight)")
+//        print("cellWidth: \(cellWidth), cellHeight: \(cellHeight)")
         return CGSize(width: cellWidth, height: cellHeight)
 
     }
@@ -151,7 +151,7 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let windowWidth = windowRect?.size.width;
         let sideInset = windowWidth! * 0.1
         
-        print("sideInset: \(sideInset)")
+//        print("sideInset: \(sideInset)")
         return UIEdgeInsetsMake(40.0, sideInset, 40.0, sideInset)
     }
     
@@ -160,7 +160,7 @@ extension MainGameViewController: UICollectionViewDelegateFlowLayout {
         let windowWidth = windowRect?.size.width;
         let lineSpacing = windowWidth! * 0.03
         
-        print("line spacing: \(lineSpacing)")
+//        print("line spacing: \(lineSpacing)")
         return lineSpacing
     }
 }
