@@ -24,7 +24,9 @@ class MessagesViewController: MSMessagesAppViewController {
         // This will happen when the extension is about to present UI.
         
         // Use this method to configure the extension and restore previously stored state.
-        super.willBecomeActive(with: conversation);
+        super.willBecomeActive(with: conversation)
+        
+        print("willBecomeActive: started")
         
         presentViewController(for: conversation, with: presentationStyle)
     }
@@ -36,15 +38,14 @@ class MessagesViewController: MSMessagesAppViewController {
         guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
         presentViewController(for: conversation, with: presentationStyle)
         
+        print("willTransition: starts")
         if presentationStyle == .compact && self.presentationStyle == .expanded {
             print("Changing to compact - transition")
             if let decodedRawPicksData = UserDefaults.standard.object(forKey: UserDefaultsCancelledRawPicksKey) as? NSData, let decodedSender = UserDefaults.standard.string(forKey: UserDefaultsCancelledSenderKey) {
                 if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
                     print("Decoded cancelled game")
                     let game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
-//                    if let bundle = Bundle.main.bundleIdentifier {
-//                        UserDefaults.standard.removePersistentDomain(forName: bundle)
-//                    }
+
                     let message = composeMessage(with: game!, session: conversation.selectedMessage?.session, uuid: conversation.localParticipantIdentifier.uuidString)
                     
                     conversation.insert(message) { error in
@@ -59,10 +60,16 @@ class MessagesViewController: MSMessagesAppViewController {
         }
     }
     
+    override func requestPresentationStyle(_ presentationStyle: MSMessagesAppPresentationStyle) {
+        super.requestPresentationStyle(presentationStyle)
+        
+        print("requestPresentationStyle: starts")
+    }
+    
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
-        print("didCancelSending")
-
         super.didCancelSending(message, conversation: conversation)
+        
+        print("didCancelSending")
         
         guard let game = Game(message: message) else { fatalError("Expected a valid game") }
         
@@ -81,10 +88,11 @@ class MessagesViewController: MSMessagesAppViewController {
         }
     }
     
-    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
-        print("didStartSending")
-        
+    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {        
         super.didStartSending(message, conversation: conversation)
+        
+        print("didStartSending")
+
         if let bundle = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundle)
         }
@@ -103,11 +111,8 @@ class MessagesViewController: MSMessagesAppViewController {
         } else {
             if let decodedRawPicksData = UserDefaults.standard.object(forKey: UserDefaultsCancelledRawPicksKey) as? NSData, let decodedSender = UserDefaults.standard.string(forKey: UserDefaultsCancelledSenderKey) {
                 if let decodedRawPicks = NSKeyedUnarchiver.unarchiveObject(with: decodedRawPicksData as Data) as? [String] {
-                    print("Decoded cancelled game")
+                    print("Decoded cancelled game in presentViewController")
                     game = Game(rawPicks: decodedRawPicks, sender: decodedSender)
-//                    if let bundle = Bundle.main.bundleIdentifier {
-//                        UserDefaults.standard.removePersistentDomain(forName: bundle)
-//                    }
                     
                 } else {
                     game = Game(message: conversation.selectedMessage) ?? Game(numPicks: MessagesDefaultCardCount)!

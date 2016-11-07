@@ -24,8 +24,8 @@ class Game {
         }
         
         let maxRange: Int = numPicks - 1
-//        let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
-        let chosenPickIndex: Int = 0;
+        let chosenPickIndex: Int = Int(arc4random_uniform(UInt32(maxRange)))
+//        let chosenPickIndex: Int = 0;
         
         self.picks = [Pick]()
         for index in 0...numPicks {
